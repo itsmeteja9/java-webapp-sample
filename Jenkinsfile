@@ -54,13 +54,7 @@ pipeline {
             }
 
         } 
-        stage('Deploy to Dev Docker Container') {
-            steps {
-                script {
-                    bat "docker run -d --name javawebapp $registry:${BUILD_NUMBER}"
-                }
-            }
-        }
+        
 
        stage('Cleaning up') {
     steps {
@@ -74,6 +68,13 @@ pipeline {
         }
     }
 }
+stage('Deploy to Dev Docker Container') {
+            steps {
+                script {
+                    bat "docker run -d --name javawebapp $registry:${BUILD_NUMBER}"
+                }
+            }
+        }
     }
 
 }
