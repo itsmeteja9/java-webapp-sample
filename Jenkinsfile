@@ -66,7 +66,7 @@ pipeline {
 
             steps { 
 
-                bat "docker rmi $registry:$BUILD_NUMBER" 
+                bat "docker rmi -f $registry:$BUILD_NUMBER" 
 
             }
 
