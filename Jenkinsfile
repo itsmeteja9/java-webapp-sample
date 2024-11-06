@@ -62,16 +62,18 @@ pipeline {
             }
         }
 
-        stage('Cleaning up') { 
+       stage('Cleaning up') {
+    steps {
+        script {
+            // Stop and remove the container first
+            bat "docker stop javawebapp"
+            bat "docker rm javawebapp"
 
-            steps { 
-
-                bat "docker rmi  $registry:$BUILD_NUMBER" 
-
-            }
-
-        } 
-
+            // Now remove the image
+            bat "docker rmi $registry:${BUILD_NUMBER}"
+        }
+    }
+}
     }
 
 }
