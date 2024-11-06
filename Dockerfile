@@ -1,11 +1,11 @@
 
-FROM openjdk:8-jre-alpine
+FROM tomcat:9.0-jdk11-openjdk
 
-RUN apk add --no-cache tomcat9 && \
-    rm -rf /var/cache/apk/*
 
-COPY /target/index.jsp /usr/local/tomcat/webapps/ROOT/
+COPY target/java-hello-world.war /usr/local/tomcat/webapps/
+
 
 EXPOSE 8080
 
-CMD ["catalina.sh", "run"]
+
+CMD ["java", "-jar","java-hello-world.war"]
