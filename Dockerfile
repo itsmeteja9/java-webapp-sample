@@ -4,7 +4,7 @@ FROM openjdk:8-jre-alpine
 RUN apk add --no-cache tomcat9 && \
     rm -rf /var/cache/apk/*
 
-COPY your_jsp_file.jsp /usr/local/tomcat/webapps/ROOT/
+COPY index.jsp /usr/local/tomcat/webapps/ROOT/
 
 EXPOSE 8080
 
