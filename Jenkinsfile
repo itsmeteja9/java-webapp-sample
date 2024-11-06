@@ -54,10 +54,10 @@ pipeline {
             }
 
         } 
-        stage('Run Docker Container') {
+        stage('Deploy to Dev Docker Container') {
             steps {
                 script {
-                    bat 'docker run -d --name javawebapp $itsmeteja9/java-webapp-sample:$7'
+                    bat 'docker run -d --name javawebapp $registry:${BUILD_NUMBER}'
                 }
             }
         }
