@@ -55,20 +55,35 @@ pipeline {
 
         } 
         
-
-       stage('Cleaning up') {
+stage('Deploy to Dev Docker Container') {
+            steps {
+                script {
+                    bat "docker run -d --name javawebapp $registry:${BUILD_NUMBER}"
+                }
+            }
+        }
+         stage('Cleaning up') {
     steps {
         script {
             // Stop and remove the container first
             bat "docker stop javawebapp"
             bat "docker rm javawebapp"
-
+        def lastSuccessfulBuildID = 0
+        def build = currentBuild.previousBuild
+        while (build != null) {
+            if (build.result == "SUCCESS")
+            {
+                lastSuccessfulBuildID = build.id as Integer
+                break
+            }
+            build = build.previousBuild
+        }
+        println lastSuccessfulBuildID
             // Now remove the image
-            bat "docker rmi $registry:${BUILD_NUMBER}"
+            bat "docker rmi $registry:${build}"
         }
     }
 }
-
     }
 
 }
