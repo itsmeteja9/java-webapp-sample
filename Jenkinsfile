@@ -80,7 +80,7 @@ stage('Deploy to Dev Docker Container') {
         }
         println lastSuccessfulBuildID
             // Now remove the image
-            bat "docker rmi $registry:${build}"
+            bat "docker rmi $registry:${lastSuccessfulBuildID}"
         }
     }
 }
