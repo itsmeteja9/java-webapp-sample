@@ -7,7 +7,7 @@ pipeline {
         registryCredential = 'dockerjenkinsintegration' 
 
         dockerImage = '' 
-        SONARQUBE_SERVER = 'sonarserver'
+       
     }
     agent any 
  tools { 
@@ -24,22 +24,7 @@ pipeline {
             }
 
         } 
-         stage('SonarQube Analysis') {
-            steps {
-                script {
-                    // Ensure the SonarQube analysis is done with the correct server
-                    withSonarQubeEnv(SONARQUBE_SERVER) {
-                        bash 'mvn sonar:sonar'  // Run SonarQube analysis
-                    }
-                }
-            }
-        }
-        stage('Quality Gate') {
-            steps {
-                // Wait for the SonarQube Quality Gate to pass
-                waitForQualityGate abortPipeline: true
-            }
-        }
+      
         stage('Building our image') { 
 
             steps { 
