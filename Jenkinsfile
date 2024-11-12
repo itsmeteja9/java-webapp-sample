@@ -29,7 +29,7 @@ pipeline {
                 script {
                     // Ensure the SonarQube analysis is done with the correct server
                     withSonarQubeEnv(SONARQUBE_SERVER) {
-                        sh 'mvn sonar:sonar'  // Run SonarQube analysis
+                        bash 'mvn sonar:sonar'  // Run SonarQube analysis
                     }
                 }
             }
