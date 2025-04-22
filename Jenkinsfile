@@ -14,18 +14,18 @@ pipeline {
 
     stages { 
 
-        stage('Compile and Build Jar') { 
+        stage('Compile Project') { 
             steps { 
-                bat 'mvn clean install'
+                bat 'mvn clean compile'
             }
-        } 
+        }
 
         stage('SonarQube Analysis') {
             steps {
                 script {
+                    // Ensure .class files are present during analysis
                     withSonarQubeEnv('sonarserver') {
-                        // Updated line with sonar.java.binaries
-                        bat 'mvn sonar:sonar -Dsonar.java.binaries=target/classes'
+                        bat 'mvn compile sonar:sonar -Dsonar.java.binaries=target/classes'
                     }
                 }
             }
@@ -33,6 +33,7 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
+                // Wait for SonarQube Quality Gate to pass
                 waitForQualityGate abortPipeline: true
             }
         }
@@ -54,7 +55,7 @@ pipeline {
                 } 
             }
         } 
-        
+
         stage('Deploy to Dev Docker Container') {
             steps {
                 script {
@@ -79,10 +80,9 @@ pipeline {
                         }
                         build = build.previousBuild
                     }
-
                     println lastSuccessfulBuildID
 
-                    // Now remove the old image
+                    // Remove the image
                     bat "docker rmi $registry:${lastSuccessfulBuildID}"
                 }
             }
